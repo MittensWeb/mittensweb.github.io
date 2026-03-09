@@ -140,6 +140,8 @@ let chatType
 let unsub
 let replyTo=null
 
+document.addEventListener("DOMContentLoaded",()=>{
+
 const friendsUl=document.getElementById("friendsUl")
 const groupsUl=document.getElementById("groupsUl")
 const chatPopup=document.getElementById("chatPopup")
@@ -287,7 +289,6 @@ let ref
 if(type==="friend"){
 
 let cid=[user.uid,id].sort().join("_")
-
 ref=collection(db,"directMessages",cid,"messages")
 
 }else{
@@ -316,7 +317,6 @@ let m=d.data()
 let id=d.id
 
 let div=document.createElement("div")
-
 div.className="message-bubble "+(m.user===user.uid?"self":"friend")
 
 let uname=document.createElement("div")
@@ -340,76 +340,9 @@ text.textContent=m.text
 
 div.appendChild(text)
 
-let menu=document.createElement("div")
-menu.className="menu"
-
-let btn=document.createElement("button")
-btn.className="menu-btn"
-btn.textContent="⋮"
-
-btn.onclick=(e)=>{
-
-e.stopPropagation()
-
-document.querySelectorAll(".menu").forEach(m=>{
-if(m!==menu)m.classList.remove("open")
-})
-
-menu.classList.toggle("open")
-
-}
-
-let menuContent=document.createElement("div")
-menuContent.className="menu-content"
-
-let reply=document.createElement("button")
-reply.textContent="Reply"
-
-reply.onclick=()=>{
-replyTo={id:id,text:m.text}
-replyPreview.textContent="Replying to: "+m.text
-}
-
-menuContent.appendChild(reply)
-
-if(m.user===user.uid){
-
-let edit=document.createElement("button")
-edit.textContent="Edit"
-
-edit.onclick=async()=>{
-
-let t=prompt("Edit message",m.text)
-if(!t)return
-
-await updateDoc(d.ref,{text:t})
-
-}
-
-let del=document.createElement("button")
-del.textContent="Delete"
-
-del.onclick=async()=>{
-await deleteDoc(d.ref)
-}
-
-menuContent.appendChild(edit)
-menuContent.appendChild(del)
-
-}
-
-menu.appendChild(btn)
-menu.appendChild(menuContent)
-
-div.appendChild(menu)
-
 chatMessages.appendChild(div)
 
 }
-
-document.addEventListener("click",()=>{
-document.querySelectorAll(".menu").forEach(m=>m.classList.remove("open"))
-})
 
 document.getElementById("sendBtn").onclick=sendMessage
 
@@ -430,7 +363,6 @@ timestamp:serverTimestamp()
 if(replyTo){
 
 msg.reply={id:replyTo.id,text:replyTo.text}
-
 replyTo=null
 replyPreview.textContent=""
 
@@ -440,56 +372,101 @@ if(chatType==="friend"){
 
 let cid=[user.uid,chatId].sort().join("_")
 
-await addDoc(
-collection(db,"directMessages",cid,"messages"),
-msg
-)
+await addDoc(collection(db,"directMessages",cid,"messages"),msg)
 
 }else{
 
-await addDoc(
-collection(db,"groups",chatId,"messages"),
-msg
-)
+await addDoc(collection(db,"groups",chatId,"messages"),msg)
 
 }
 
 }
 
-document.getElementById("leaveGroupBtn").onclick=async()=>{
+/* ---------------- ADD FRIEND ---------------- */
 
-if(chatType!=="group")return
+document.getElementById("addFriendBtn").onclick=async()=>{
 
-let gref=doc(db,"groups",chatId)
-let snap=await getDoc(gref)
+let friendUID=document.getElementById("friendCode").value.trim()
+if(!friendUID)return alert("Enter UID")
 
-let g=snap.data()
+if(friendUID===user.uid)return alert("Cannot add yourself")
 
-let members=g.members.filter(m=>m!==user.uid)
+let accRef=doc(db,"accounts",friendUID)
+let snap=await getDoc(accRef)
 
-await updateDoc(gref,{members:members})
+if(!snap.exists())return alert("User not found")
+
+await updateDoc(doc(db,"accounts",user.uid),{
+friends:arrayUnion(friendUID)
+})
+
+await updateDoc(accRef,{
+friends:arrayUnion(user.uid)
+})
+
+document.getElementById("friendCode").value=""
+
+loadFriends()
+
+}
+
+/* ---------------- CREATE GROUP ---------------- */
+
+document.getElementById("createGroupBtn").onclick=async()=>{
+
+let name=document.getElementById("groupName").value.trim()
+if(!name)return alert("Enter group name")
+
+let code=Math.random().toString(36).substring(2,8)
+
+await setDoc(doc(db,"groups",code),{
+name:name,
+code:code,
+owner:user.uid,
+members:[user.uid]
+})
 
 let acc=await getDoc(doc(db,"accounts",user.uid))
+let groups=acc.data().groups||[]
 
-let groups=acc.data().groups.filter(x=>x.code!==chatId)
+groups.push({name:name,code:code})
 
 await updateDoc(doc(db,"accounts",user.uid),{groups:groups})
 
-chatPopup.style.display="none"
+document.getElementById("groupName").value=""
 
 loadGroups()
 
+alert("Group code: "+code)
+
 }
 
-document.getElementById("deleteGroupBtn").onclick=async()=>{
+/* ---------------- JOIN GROUP ---------------- */
 
-if(chatType!=="group")return
+document.getElementById("joinGroupBtn").onclick=async()=>{
 
-if(!confirm("Delete this group?"))return
+let code=document.getElementById("joinCode").value.trim()
+if(!code)return alert("Enter code")
 
-await deleteDoc(doc(db,"groups",chatId))
+let gref=doc(db,"groups",code)
+let snap=await getDoc(gref)
 
-chatPopup.style.display="none"
+if(!snap.exists())return alert("Group not found")
+
+let g=snap.data()
+
+await updateDoc(gref,{
+members:arrayUnion(user.uid)
+})
+
+let acc=await getDoc(doc(db,"accounts",user.uid))
+let groups=acc.data().groups||[]
+
+groups.push({name:g.name,code:code})
+
+await updateDoc(doc(db,"accounts",user.uid),{groups:groups})
+
+document.getElementById("joinCode").value=""
 
 loadGroups()
 
@@ -503,7 +480,10 @@ if(unsub)unsub()
 
 }
 
+})
+
 </script>
 </body>
 
 </html>
+
