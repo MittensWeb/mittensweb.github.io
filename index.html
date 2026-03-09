@@ -5,7 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mittens</title>
 <link rel="stylesheet" href="/assets/styles.css">
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
 
+window.OneSignal = window.OneSignal || [];
+OneSignal.push(function() {
+
+OneSignal.init({
+appId: "52c04054-eb84-4e70-8f4d-37cb895e365c"
+});
+
+});
+
+</script>
 
 </head>
 
@@ -519,5 +531,6 @@ if(unsub)unsub()
 </body>
 
 </html>
+
 
 
