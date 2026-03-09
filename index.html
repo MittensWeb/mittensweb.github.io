@@ -6,6 +6,114 @@
 <title>Mittens</title>
 <link rel="stylesheet" href="/assets/styles.css">
 
+
+</head>
+
+<body>
+
+<div class="username-modal" id="usernameModal">
+
+<div class="username-box">
+
+<h3>Choose Username</h3>
+
+<input id="usernameInput">
+
+<button id="saveUsername">Save</button>
+
+</div>
+
+</div>
+
+<header>
+
+<img src="/assets/logo.png" class="logo">
+
+<div class="user-box">
+
+<div id="userEmail"></div>
+
+<div class="uid-box">
+
+<span id="userUID"></span>
+
+<button class="copy-btn" id="copyUID">Copy</button>
+
+</div>
+
+</div>
+
+<button id="logout">Logout</button>
+
+</header>
+
+<main>
+
+<div class="card">
+
+<h2>Friends</h2>
+
+<div class="chat-controls">
+
+<input id="friendCode" placeholder="Friend UID">
+
+<button id="addFriendBtn">Add Friend</button>
+
+</div>
+
+<ul id="friendsUl"></ul>
+
+</div>
+
+<div class="card">
+
+<h2>Groups</h2>
+
+<div class="chat-controls">
+
+<input id="groupName" placeholder="New group name">
+
+<button id="createGroupBtn">Create</button>
+
+</div>
+
+<div class="chat-controls">
+
+<input id="joinCode" placeholder="Group code">
+
+<button id="joinGroupBtn">Join</button>
+
+</div>
+
+<ul id="groupsUl"></ul>
+
+</div>
+
+</main>
+
+<div class="modal-backdrop" id="chatPopup">
+
+<div class="modal">
+
+<h3 id="chatTitle"></h3>
+
+<div id="chatMessages" class="messages"></div>
+
+<div id="replyPreview" class="reply-preview"></div>
+
+<input id="chatInput" placeholder="Message">
+
+<button id="sendBtn">Send</button>
+
+<button id="leaveGroupBtn">Leave Group</button>
+
+<button id="deleteGroupBtn">Delete Group</button>
+
+<button id="closeChat">Close</button>
+
+</div>
+
+</div>
 <script type="module">
 
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"
@@ -396,113 +504,6 @@ if(unsub)unsub()
 }
 
 </script>
-</head>
-
-<body>
-
-<div class="username-modal" id="usernameModal">
-
-<div class="username-box">
-
-<h3>Choose Username</h3>
-
-<input id="usernameInput">
-
-<button id="saveUsername">Save</button>
-
-</div>
-
-</div>
-
-<header>
-
-<img src="/assets/logo.png" class="logo">
-
-<div class="user-box">
-
-<div id="userEmail"></div>
-
-<div class="uid-box">
-
-<span id="userUID"></span>
-
-<button class="copy-btn" id="copyUID">Copy</button>
-
-</div>
-
-</div>
-
-<button id="logout">Logout</button>
-
-</header>
-
-<main>
-
-<div class="card">
-
-<h2>Friends</h2>
-
-<div class="chat-controls">
-
-<input id="friendCode" placeholder="Friend UID">
-
-<button id="addFriendBtn">Add Friend</button>
-
-</div>
-
-<ul id="friendsUl"></ul>
-
-</div>
-
-<div class="card">
-
-<h2>Groups</h2>
-
-<div class="chat-controls">
-
-<input id="groupName" placeholder="New group name">
-
-<button id="createGroupBtn">Create</button>
-
-</div>
-
-<div class="chat-controls">
-
-<input id="joinCode" placeholder="Group code">
-
-<button id="joinGroupBtn">Join</button>
-
-</div>
-
-<ul id="groupsUl"></ul>
-
-</div>
-
-</main>
-
-<div class="modal-backdrop" id="chatPopup">
-
-<div class="modal">
-
-<h3 id="chatTitle"></h3>
-
-<div id="chatMessages" class="messages"></div>
-
-<div id="replyPreview" class="reply-preview"></div>
-
-<input id="chatInput" placeholder="Message">
-
-<button id="sendBtn">Send</button>
-
-<button id="leaveGroupBtn">Leave Group</button>
-
-<button id="deleteGroupBtn">Delete Group</button>
-
-<button id="closeChat">Close</button>
-
-</div>
-
-</div>
-
 </body>
+
 </html>
