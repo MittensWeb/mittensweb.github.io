@@ -8,6 +8,142 @@
 --radius:14px
 }
 
+.auth-main{
+width:100%;
+max-width:420px;
+margin:auto;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+gap:14px;
+padding:32px;
+position:relative;
+z-index:2;
+}
+
+.auth-main h1{
+margin:0 0 8px;
+font-size:2rem;
+font-weight:700;
+letter-spacing:-1px;
+color:#111;
+}
+
+.auth-main p{
+margin:0;
+font-size:.85rem;
+color:var(--muted);
+line-height:1.5;
+}
+
+.auth-main a{
+color:#111;
+font-weight:600;
+text-decoration:none;
+transition:.2s;
+}
+
+.auth-main a:hover{
+opacity:.7;
+}
+
+.auth-main input{
+width:100%;
+padding:14px 16px;
+border-radius:14px;
+border:1px solid var(--border);
+background:#fff;
+font-size:.95rem;
+font-family:'Poppins',sans-serif;
+outline:none;
+transition:.2s;
+box-shadow:0 2px 10px rgba(0,0,0,0.03);
+}
+
+.auth-main input:focus{
+border-color:#111;
+transform:translateY(-1px);
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.auth-main button{
+height:50px;
+border:none;
+border-radius:14px;
+background:#111;
+color:#fff;
+font-size:.92rem;
+font-weight:600;
+font-family:'Poppins',sans-serif;
+cursor:pointer;
+transition:.2s;
+box-shadow:0 8px 20px rgba(0,0,0,0.12);
+}
+
+.auth-main button:hover{
+transform:translateY(-2px);
+opacity:.92;
+}
+
+.auth-main button:active{
+transform:scale(.98);
+}
+
+#infoText{
+min-height:18px;
+font-size:.8rem;
+font-weight:500;
+color:#ef4444;
+}
+
+.copy-btn{
+height:auto!important;
+padding:8px 12px;
+font-size:.75rem!important;
+border-radius:10px!important;
+margin-left:8px;
+background:#ff751f!important;
+box-shadow:none!important;
+}
+
+.copy-btn:hover{
+opacity:.85;
+transform:none!important;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at top left,rgba(255,255,255,0.9),transparent 30%),
+radial-gradient(circle at bottom right,rgba(0,0,0,0.04),transparent 35%);
+pointer-events:none;
+z-index:0;
+}
+
+.auth-main{
+background:rgba(255,255,255,0.78);
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
+border:1px solid rgba(255,255,255,0.5);
+border-radius:28px;
+box-shadow:
+0 10px 40px rgba(0,0,0,0.08),
+0 2px 10px rgba(255,255,255,0.6) inset;
+}
+
+@media(max-width:600px){
+.auth-main{
+max-width:100%;
+min-height:100vh;
+border-radius:0;
+padding:24px;
+justify-content:center;
+}
+}
+
 *{box-sizing:border-box}
 
 body{
